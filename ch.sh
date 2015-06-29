@@ -125,4 +125,28 @@ _ch-complete ch-python CH_PYTHON_INSTALL_DIR
 
 # }}}
 
+# Node {{{
+
+export CH_NODE_INSTALL_DIR="${CH_NODE_INSTALL_DIR:-$CH_BASE_INSTALL_DIR/node}"
+
+function ch-node-reset() {
+  [ -n "$NODE_ROOT" ] && _ch-path-remove PATH "$NODE_ROOT/bin"
+  unset NODE_ROOT
+}
+
+function ch-node() {
+  local node_root="$CH_NODE_INSTALL_DIR/$1"
+  if [ ! -d "$node_root" ]; then
+    _ch-abort "no node version matching '$1'"
+    return
+  fi
+
+  ch-node-reset
+  export NODE_ROOT="$node_root"
+  _ch-path-add PATH "$NODE_ROOT/bin"
+}
+_ch-complete ch-node CH_NODE_INSTALL_DIR
+
+# }}}
+
 # vim:foldmethod=marker
